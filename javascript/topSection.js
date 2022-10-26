@@ -1,98 +1,80 @@
-import { cityDetails, cityNames } from "./data.js";
-//import * as calculate from "./calculate.js";
+import { cityNames } from "./data.js";
 import { updateCurrentCity } from "./cityObject.js";
 
-
-
-
 const inputCity = document.querySelector("#city-name");
-let myInterval ;
 
+let myInterval;
+
+/**
+ * 
+ * @param {string} inp input words 
+ * @param {Array} arr  array of city names
+ */
 function autocomplete(inp, arr) {
-  /*the autocomplete function takes two arguments,
-  the text field element and an array of possible autocompleted values:*/
   var currentFocus;
-  /*execute a function when someone writes in the text field:*/
   inp.addEventListener("input", function (e) {
-    var a, b, i, val = this.value;
-    /*close any already open lists of autocompleted values*/
+    var a,
+      b,
+      i,
+      val = this.value;
+
     closeAllLists();
-    if (!val) { return false; }
     currentFocus = -1;
-    /*create a DIV element that will contain the items (values):*/
+
     a = document.createElement("DIV");
     a.setAttribute("id", this.id + "autocomplete-list");
     a.setAttribute("class", "autocomplete-items");
-    /*append the DIV element as a child of the autocomplete container:*/
+
     this.parentNode.appendChild(a);
-    /*for each item in the array...*/
     for (i = 0; i < arr.length; i++) {
-      /*check if the item starts with the same letters as the text field value:*/
       if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-        /*create a DIV element for each matching element:*/
         b = document.createElement("DIV");
-        /*make the matching letters bold:*/
         b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
         b.innerHTML += arr[i].substr(val.length);
-        /*insert a input field that will hold the current array item's value:*/
         b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-        /*execute a function when someone clicks on the item value (DIV element):*/
         b.addEventListener("click", function (e) {
-          /*insert the value for the autocomplete text field:*/
           inp.value = this.getElementsByTagName("input")[0].value;
           SelectedCity(inp.value);
-          /*close the list of autocompleted values,
-          (or any other open lists of autocompleted values:*/
           closeAllLists();
         });
         a.appendChild(b);
       }
     }
   });
-  /*execute a function presses a key on the keyboard:*/
+
   inp.addEventListener("keydown", function (e) {
     var x = document.getElementById(this.id + "autocomplete-list");
     if (x) x = x.getElementsByTagName("div");
     if (e.keyCode == 40) {
-      /*If the arrow DOWN key is pressed,
-      increase the currentFocus variable:*/
       currentFocus++;
-      /*and and make the current item more visible:*/
+
       addActive(x);
-    } else if (e.keyCode == 38) { //up
-      /*If the arrow UP key is pressed,
-      decrease the currentFocus variable:*/
+    } else if (e.keyCode == 38) {
       currentFocus--;
-      /*and and make the current item more visible:*/
+
       addActive(x);
     } else if (e.keyCode == 13) {
-      /*If the ENTER key is pressed, prevent the form from being submitted,*/
       e.preventDefault();
       if (currentFocus > -1) {
-        /*and simulate a click on the "active" item:*/
         if (x) x[currentFocus].click();
       }
     }
   });
   function addActive(x) {
-    /*a function to classify an item as "active":*/
     if (!x) return false;
-    /*start by removing the "active" class on all items:*/
+
     removeActive(x);
     if (currentFocus >= x.length) currentFocus = 0;
-    if (currentFocus < 0) currentFocus = (x.length - 1);
-    /*add class "autocomplete-active":*/
+    if (currentFocus < 0) currentFocus = x.length - 1;
+
     x[currentFocus].classList.add("autocomplete-active");
   }
   function removeActive(x) {
-    /*a function to remove the "active" class from all autocomplete items:*/
     for (var i = 0; i < x.length; i++) {
       x[i].classList.remove("autocomplete-active");
     }
   }
   function closeAllLists(elmnt) {
-    /*close all autocomplete lists in the document,
-    except the one passed as an argument:*/
     var x = document.getElementsByClassName("autocomplete-items");
     for (var i = 0; i < x.length; i++) {
       if (elmnt != x[i] && elmnt != inp) {
@@ -100,78 +82,97 @@ function autocomplete(inp, arr) {
       }
     }
   }
-  /*execute a function when someone clicks in the document:*/
+
   document.addEventListener("click", function (e) {
     closeAllLists(e.target);
   });
 }
 
-// function calculateF(tempCstr) {
-//   const tempC = tempCstr.slice(0, -2);
-//   return Math.trunc((((Number(tempC)) * (9 / 5)) + 32)).toString() + ' F';
-// }
+/**
+ * @description running under setinterval
+ *
+ * @param {object} cityInfo details of input current city
+ */
+function timeDisplay(cityInfo) {
+  let dateAndTime = new Date().toLocaleString("en-US", {
+    timeZone: "" + cityInfo.timeZone,
+  });
+  dateAndTime = cityInfo.calculateDateAndTime(dateAndTime);
+  const hour = document.querySelector("#hour").innerHTML;
+  const time = cityInfo.calculateTime(dateAndTime[1]);
+  if (time[0] === hour) {
+    document.getElementById("hour").innerHTML = time[0];
+    document.getElementById("minutes").innerHTML = time[1];
+    document.getElementById("secs").innerHTML = time[2];
+  } else {
+    SelectedCity(cityInfo.name);
+  }
+}
 
 /**
- * 
- * @param {*} val 
- * @returns 
+ * @description displaying next five hours data
+ *
+ * @param {object} cityInfo details of input current city
  */
-// function selectIcon(val) {
-//   val = val.slice(0, -2);
-//   if (val > 29) {
-//     return "sunnyIconBlack";
-//   } else if (val >= 23 && val <= 29) {
-//     return "cloudyIcon";
-//   } else if (val >= 18 && val <= 22) {
-//     return "windyIcon";
-//   } else {
-//     return "rainyIconBlack"
-//   }
-// }
-
-/**
- * 
- * @param {*} cityInfo 
- */
-function continueDisplay(cityInfo){
-  let dateAndTime = new Date().toLocaleString("en-US", { timeZone: "" + cityInfo.timeZone });
+function continueDisplay(cityInfo) {
+  clearInterval(myInterval);
+  let dateAndTime = new Date().toLocaleString("en-US", {
+    timeZone: "" + cityInfo.timeZone,
+  });
   dateAndTime = cityInfo.calculateDateAndTime(dateAndTime);
   const time = cityInfo.calculateTime(dateAndTime[1]);
   document.getElementById("hour").innerHTML = time[0];
   document.getElementById("minutes").innerHTML = time[1];
   document.getElementById("secs").innerHTML = time[2];
+  myInterval = setInterval(function () {
+    timeDisplay(cityInfo);
+  }, 1000);
   document.getElementById("date").innerHTML = dateAndTime[0].getDate();
-  document.getElementById("month").innerHTML = cityInfo .calculateMonth(dateAndTime[0].getMonth());
+  document.getElementById("month").innerHTML = cityInfo.calculateMonth(
+    dateAndTime[0].getMonth()
+  );
   document.getElementById("year").innerHTML = dateAndTime[0].getFullYear();
-  if (time[3] === 'AM') {
-    document.getElementById("stateImg").src = "../assets/amState.svg";
-  } else if (time[3] === 'PM') {
-    document.getElementById("stateImg").src = "../assets/pmState.svg";
+  if (time[3] === "AM") {
+    document.getElementById("stateImg").src = "assets/amState.svg";
+  } else if (time[3] === "PM") {
+    document.getElementById("stateImg").src = "assets/pmState.svg";
   }
 
-  document.getElementById("city-image").src = "../assets/HTML_&_CSS/Icons_for_cities/" + cityInfo.name + ".svg";
-  document.getElementById("weather-temperature-now").innerHTML = cityInfo.temperature.split(" ").join("");
-  document.getElementById("weather-icon-now").src = "../assets/HTML_&_CSS/Weather_Icons/" + cityInfo.selectIcon(cityInfo.temperature) + ".svg";
+  document.getElementById("city-image").src =
+    "assets/HTML_&_CSS/Icons_for_cities/" + cityInfo.name + ".svg";
+  document.getElementById("weather-temperature-now").innerHTML =
+    cityInfo.temperature.split(" ").join("");
+  document.getElementById("weather-icon-now").src =
+    "assets/HTML_&_CSS/Weather_Icons/" +
+    cityInfo.selectIcon(cityInfo.temperature) +
+    ".svg";
 
   let counter = 1;
- 
   for (let i = 0; i < cityInfo.nextFiveHrs.length; i++) {
-    document.getElementById("weather-icon-" + i).src = "../assets/HTML_&_CSS/Weather_Icons/" + cityInfo.selectIcon(cityInfo.nextFiveHrs[i]) + ".svg";
-    document.getElementById("weather-temperature-" + i).innerHTML = cityInfo.nextFiveHrs[i].split(" ").join("");
-    if (time[3] === 'AM') {
-      if ((Number(time[0]) + i + 1) < 12) {
-        document.getElementById("weather-time-" + i).innerHTML = Number(time[0]) + i + 1 + time[3];
-      } else if ((Number(time[0]) + i + 1) === 12) {
-        document.getElementById("weather-time-" + i).innerHTML = Number(time[0]) + i + 1 + "PM";
+    document.getElementById("weather-icon-" + i).src =
+      "assets/HTML_&_CSS/Weather_Icons/" +
+      cityInfo.selectIcon(cityInfo.nextFiveHrs[i]) +
+      ".svg";
+    document.getElementById("weather-temperature-" + i).innerHTML =
+      cityInfo.nextFiveHrs[i].split(" ").join("");
+    if (time[3] === "AM") {
+      if (Number(time[0]) + i + 1 < 12) {
+        document.getElementById("weather-time-" + i).innerHTML =
+          Number(time[0]) + i + 1 + time[3];
+      } else if (Number(time[0]) + i + 1 === 12) {
+        document.getElementById("weather-time-" + i).innerHTML =
+          Number(time[0]) + i + 1 + "PM";
       } else {
         document.getElementById("weather-time-" + i).innerHTML = counter + "PM";
         counter++;
       }
-    } else if (time[3] === 'PM') {
-      if ((Number(time[0]) + i + 1) < 12) {
-        document.getElementById("weather-time-" + i).innerHTML = Number(time[0]) + i + 1 + time[3];
-      } else if ((Number(time[0]) + i + 1) === 12) {
-        document.getElementById("weather-time-" + i).innerHTML = Number(time[0]) + i + 1 + "AM";
+    } else if (time[3] === "PM") {
+      if (Number(time[0]) + i + 1 < 12) {
+        document.getElementById("weather-time-" + i).innerHTML =
+          Number(time[0]) + i + 1 + time[3];
+      } else if (Number(time[0]) + i + 1 === 12) {
+        document.getElementById("weather-time-" + i).innerHTML =
+          Number(time[0]) + i + 1 + "AM";
       } else {
         document.getElementById("weather-time-" + i).innerHTML = counter + "AM";
         counter++;
@@ -181,12 +182,11 @@ function continueDisplay(cityInfo){
 }
 
 /**
- * 
- * @param {*} currentCity 
+ * @description displays data in top section according selection of city in input field
+ *
+ * @param {string} currentCity input city name
  */
 async function SelectedCity(currentCity) {
-  clearInterval(myInterval);
- //const cityInfo = cityDetails[currentCity.toLowerCase()];
   const cityInfo = updateCurrentCity(currentCity);
   await cityInfo.nextFiveHrss(currentCity);
   document.getElementById("precipitation").innerHTML = cityInfo.precipitation;
@@ -194,11 +194,14 @@ async function SelectedCity(currentCity) {
   const tempF = cityInfo.calculateF(cityInfo.temperature);
   document.getElementById("temperatureF").innerHTML = tempF;
   document.getElementById("humidity").innerHTML = cityInfo.humidity;
-  myInterval = setInterval( function() { continueDisplay(cityInfo); }, 1000);
+  continueDisplay(cityInfo);
 }
 
-
-//top section function
+/**
+ * @description Initialize top section
+ *
+ * @export {function}
+ */
 export function topSectionDisplay() {
   autocomplete(inputCity, cityNames);
   SelectedCity(inputCity.value);

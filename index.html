@@ -1,145 +1,218 @@
 <html>
+  <head>
+    <title>Weather forecast</title>
+    <link rel="shortcut icon" href="./assets/kweather.ico" />
+    <!-- view-port -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--CSS file-->
+    <link rel="stylesheet" type="text/css" href="./CSS/style.css" />
+  </head>
 
-<head>
-  <title>Weather forecast</title>
-  <link rel="shortcut icon" href="./assets/kweather.ico" />
-  <!-- view-port -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--CSS file-->
-  <link rel="stylesheet" type="text/css" href="./CSS/style.css" />
-
-</head>
-
-<body>
-  <!-- Total page -->
-  <div class="page-container">
-    <!-- T1001-Top Area -->
-    <div class="top-container">
-      <div class="top-city flex-top-info">
-        <!-- current city details -->
-        <div class="current-city">
-          <img class="city-image" id="city-image" src="./assets/cityImage.svg" />
-          <div class="city-img" autocomplete="off">
-            <div class="autocomplete">
-              <input class="city-input-field" id="city-name" type="text" value="London" />
-            </div>
-            <div class="input-section">
-              <div class="time-display">
-                <div class="time">
-                  <span id="hour"> 07</span><span class="colon-seperator">:</span><span id="minutes">30</span><span class="secs-font">:<span id="secs">30</span></span>
-                </div>
-                <img class="current-clock-state" id="stateImg" src="./assets/amState.svg" />
+  <body>
+    <!-- Total page -->
+    <div class="page-container">
+      <!-- T1001-Top Area -->
+      <div class="top-container">
+        <div class="top-city flex-top-info">
+          <!-- current city details -->
+          <div class="current-city">
+            <img
+              class="city-image"
+              id="city-image"
+              src="./assets/cityImage.svg"
+            />
+            <div class="city-img" autocomplete="off">
+              <div class="autocomplete">
+                <input
+                  class="city-input-field"
+                  id="city-name"
+                  type="text"
+                  value="London"
+                />
               </div>
-              <span class="date"><span id="date">23</span>-<span id="month">Mar</span>-<span id="year">2021</span></span>
+              <div class="input-section">
+                <div class="time-display">
+                  <div class="time">
+                    <span id="hour"> 07</span
+                    ><span class="colon-seperator">:</span
+                    ><span id="minutes">30</span
+                    ><span class="secs-font">:<span id="secs">30</span></span>
+                  </div>
+                  <img
+                    class="current-clock-state"
+                    id="stateImg"
+                    src="./assets/amState.svg"
+                  />
+                </div>
+                <span class="date"
+                  ><span id="date">23</span>-<span id="month">Mar</span>-<span
+                    id="year"
+                    >2021</span
+                  ></span
+                >
+              </div>
             </div>
           </div>
-        </div>
-        <!-- temperture show column -->
-        <div class="grid-temperature">
-          <div class="parameter-container border-right">
-            <div class="parameter">
-              Temp &#xb0;C
+          <!-- temperture show column -->
+          <div class="grid-temperature">
+            <div class="parameter-container border-right">
+              <div class="parameter">Temp &#xb0;C</div>
+              <div class="parameterV" id="temperatureC">
+                25 <span class="parameterSymbol">&#xb0;C</span>
+              </div>
             </div>
-            <div class="parameterV" id="temperatureC">
-              25 <span class="parameterSymbol">&#xb0;C</span>
+            <div class="parameter-container">
+              <div class="parameter">Humidity</div>
+              <div class="parameterV" id="humidity">
+                20 <span class="parameterSymbol">%</span>
+              </div>
             </div>
-          </div>
-          <div class="parameter-container">
-            <div class="parameter">
-              Humidity
+            <div class="parameter-container border-right">
+              <div class="parameter">Temp &#xb0;F</div>
+              <div class="parameterV" id="temperatureF">
+                72 <span class="parameterSymbol">&#xb0;F</span>
+              </div>
             </div>
-            <div class="parameterV" id="humidity">
-              20 <span class="parameterSymbol">%</span>
-            </div>
-          </div>
-          <div class="parameter-container border-right">
-            <div class="parameter">
-              Temp &#xb0;F
-            </div>
-            <div class="parameterV" id="temperatureF">
-              72 <span class="parameterSymbol">&#xb0;F</span>
-            </div>
-          </div>
-          <div class="parameter-container">
-            <div class="parameter">
-              Precipitation
-            </div>
-            <div class="parameterV" id="precipitation">
-              0 <span class="parameterSymbol">%</span>
+            <div class="parameter-container">
+              <div class="parameter">Precipitation</div>
+              <div class="parameterV" id="precipitation">
+                0 <span class="parameterSymbol">%</span>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- hour wise display -->
-        <div class="hour-wise-data ">
-          <!-- Now -->
-          <div class="weather-meter space-container-around">
-            <div class="weather-time" id="weather-time-now">NOW</div>
-            <div class="vertical-line"></div>
-            <img class="weather-icon"  id="weather-icon-now" src="./assets/cloudyIcon.svg" />
-            <div class="weather-temperature" id="weather-temperature-now">22 </div>
-          </div>
-          <div class="weather-meter vertical-line-section space-container">
-            <div class="vertical-line"></div>
-          </div>
-          <!--  4 PM -->
-          <div class="weather-meter space-container-around">
-            <div class="weather-time" id="weather-time-0">4PM</div>
-            <div class="vertical-line"></div>
-            <img class="weather-icon" id="weather-icon-0" src="./assets/windyIcon.svg" />
-            <div class="weather-temperature" id="weather-temperature-0">22</div>
-          </div>
-          <div class="weather-meter vertical-line-section space-container">
-            <div class="vertical-line"></div>
-          </div>
-          <!-- 5 PM -->
-          <div class="weather-meter space-container-around">
-            <div class="weather-time" id="weather-time-1">5PM</div>
-            <div class="vertical-line"></div>
-            <img class="weather-icon" id="weather-icon-1" src="./assets/windyIcon.svg" />
-            <div class="weather-temperature" id="weather-temperature-1">22</div>
-          </div>
-          <div class="weather-meter vertical-line-section space-container">
-            <div class="vertical-line "></div>
-          </div>
-          <!-- 6 PM -->
-          <div class="weather-meter space-container-around">
-            <div class="weather-time" id="weather-time-2">6PM</div>
-            <div class="vertical-line"></div>
-            <img class="weather-icon" id="weather-icon-2" src="./assets/cloudyIcon.svg" />
-            <div class="weather-temperature" id="weather-temperature-2">22 </div>
-          </div>
-          <div class="weather-meter vertical-line-section space-container">
-            <div class="vertical-line"></div>
-          </div>
-          <!-- 7 PM -->
-          <div class="weather-meter space-container-around">
-            <div class="weather-time" id="weather-time-3">7PM</div>
-            <div class="vertical-line"></div>
-            <img class="weather-icon" id="weather-icon-3" src="./assets/rainyIcon.svg" />
-            <div class="weather-temperature" id="weather-temperature-3">22</div>
+          <!-- hour wise display -->
+          <div class="hour-wise-data">
+            <!-- Now -->
+            <div class="weather-meter space-container-around">
+              <div class="weather-time" id="weather-time-now">NOW</div>
+              <div class="vertical-line"></div>
+              <img
+                class="weather-icon"
+                id="weather-icon-now"
+                src="./assets/cloudyIcon.svg"
+              />
+              <div class="weather-temperature" id="weather-temperature-now">
+                22
+              </div>
+            </div>
+            <div class="weather-meter vertical-line-section space-container">
+              <div class="vertical-line"></div>
+            </div>
+            <!--  4 PM -->
+            <div class="weather-meter space-container-around">
+              <div class="weather-time" id="weather-time-0">4PM</div>
+              <div class="vertical-line"></div>
+              <img
+                class="weather-icon"
+                id="weather-icon-0"
+                src="./assets/windyIcon.svg"
+              />
+              <div class="weather-temperature" id="weather-temperature-0">
+                22
+              </div>
+            </div>
+            <div class="weather-meter vertical-line-section space-container">
+              <div class="vertical-line"></div>
+            </div>
+            <!-- 5 PM -->
+            <div class="weather-meter space-container-around">
+              <div class="weather-time" id="weather-time-1">5PM</div>
+              <div class="vertical-line"></div>
+              <img
+                class="weather-icon"
+                id="weather-icon-1"
+                src="./assets/windyIcon.svg"
+              />
+              <div class="weather-temperature" id="weather-temperature-1">
+                22
+              </div>
+            </div>
+            <div class="weather-meter vertical-line-section space-container">
+              <div class="vertical-line"></div>
+            </div>
+            <!-- 6 PM -->
+            <div class="weather-meter space-container-around">
+              <div class="weather-time" id="weather-time-2">6PM</div>
+              <div class="vertical-line"></div>
+              <img
+                class="weather-icon"
+                id="weather-icon-2"
+                src="./assets/cloudyIcon.svg"
+              />
+              <div class="weather-temperature" id="weather-temperature-2">
+                22
+              </div>
+            </div>
+            <div class="weather-meter vertical-line-section space-container">
+              <div class="vertical-line"></div>
+            </div>
+            <!-- 7 PM -->
+            <div class="weather-meter space-container-around">
+              <div class="weather-time" id="weather-time-3">7PM</div>
+              <div class="vertical-line"></div>
+              <img
+                class="weather-icon"
+                id="weather-icon-3"
+                src="./assets/rainyIcon.svg"
+              />
+              <div class="weather-temperature" id="weather-temperature-3">
+                22
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- T1002-middle Area -->
-    <div class="middle-conatiner">
-      <div class="middle-top-div">
-        <div class="middle-top-heading">Top cities around world</div>
+      <!-- T1002-middle Area -->
+      <div class="middle-conatiner">
+        <div class="middle-top-div">
+          <div class="middle-top-heading">Top cities around world</div>
 
-        <div class="icons" id="icons">
-          <img class="weather-icon on-mouse sunny" id="weather-icon"word="sunny" src="./assets/sunnyIcon.svg" onclick="selectedClimate(event)" />
-          <img class="weather-icon on-mouse snowflake" id="weather-icon" word="snowflake" src="./assets/snowflakeIcon.svg" onclick="selectedClimate(event)"  />
-          <img class="weather-icon on-mouse rainy" id="weather-icon" word="rainy" src="./assets/rainyIcon.svg" onclick="selectedClimate(event)" />
+          <div class="icons" id="icons">
+            <img
+              class="weather-icon on-mouse sunny"
+              id="weather-icon"
+              word="sunny"
+              src="./assets/sunnyIcon.svg"
+              onclick="selectedClimate(event)"
+            />
+            <img
+              class="weather-icon on-mouse snowflake"
+              id="weather-icon"
+              word="snowflake"
+              src="./assets/snowflakeIcon.svg"
+              onclick="selectedClimate(event)"
+            />
+            <img
+              class="weather-icon on-mouse rainy"
+              id="weather-icon"
+              word="rainy"
+              src="./assets/rainyIcon.svg"
+              onclick="selectedClimate(event)"
+            />
+          </div>
+          <div class="middle-city-selector">
+            Display top
+            <input
+              class="top-cities-count"
+              id="dispaly-count"
+              type="number"
+              value="4"
+              min="3"
+              max="10"
+              onchange="citiescount()"
+            />
+          </div>
         </div>
-        <div class="middle-city-selector">
-          Display top
-          <input class="top-cities-count" id="dispaly-count" type="number" value="4" min="3" max="10" onchange="citiescount()" />
-        </div>
-      </div>
-      <div class="middle-bottom-div">
-        <img class="pre-next-btn" id="pre" movement="forward" onclick="moveScrollBar(event)" src="./assets/previous.svg"/>
-        <div class="scroll-cities" id="scroll-cities">
-          <!-- <div class="scroll-cities-sections">
+        <div class="middle-bottom-div">
+          <img
+            class="pre-next-btn"
+            id="pre"
+            movement="forward"
+            onclick="moveScrollBar(event)"
+            src="./assets/previous.svg"
+          />
+          <div class="scroll-cities" id="scroll-cities">
+            <!-- <div class="scroll-cities-sections">
             <div class="city-values">
               <div class="city-parameter-values">
                 <div id="middle-place">
@@ -241,31 +314,47 @@
               </div>
             </div>
           </div> -->
-        </div>
-        <img class="pre-next-btn" id="next" movement="backward" onclick="moveScrollBar(event)" src="./assets/next.svg"/>
-      </div>
-      <!-- T1003-middle Area -->
-      <div class="bottom-container">
-        <div class="bottom-top-section">
-          <div class="bottom-top-heading">
-            Cities across Continents at a glance
           </div>
-          <div class="sort">
-            <div class="sort-list">Continent Name 
-              <span class="arrow continent arrowUp" value="continent" onclick="sortBy(event)">
-                &#129121;
-              </span>
+          <img
+            class="pre-next-btn"
+            id="next"
+            movement="backward"
+            onclick="moveScrollBar(event)"
+            src="./assets/next.svg"
+          />
+        </div>
+        <!-- T1003-middle Area -->
+        <div class="bottom-container">
+          <div class="bottom-top-section">
+            <div class="bottom-top-heading">
+              Cities across Continents at a glance
             </div>
-            <div class="sort-list">Temperature 
-              <span class="arrow temperature arrowDown" value="temperature" onclick="sortBy(event)">
-                &#129123;
-              </span>
+            <div class="sort">
+              <div class="sort-list">
+                Continent Name
+                <span
+                  class="arrow continent arrowUp"
+                  value="continent"
+                  onclick="sortBy(event)"
+                >
+                  &#129121;
+                </span>
+              </div>
+              <div class="sort-list">
+                Temperature
+                <span
+                  class="arrow temperature arrowDown"
+                  value="temperature"
+                  onclick="sortBy(event)"
+                >
+                  &#129123;
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="bottom-bottom-section">
-          <div class="bottom-grid-container">
-            <!-- <div class="bottom-grid-section">
+          <div class="bottom-bottom-section">
+            <div class="bottom-grid-container">
+              <!-- <div class="bottom-grid-section">
               <div class="bottom-grid-flex">
                 <div class="bottom-place-temp">
                   <div class="bottom-continent">
@@ -517,13 +606,12 @@
                 </div>
               </div>
             </div> -->
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script type="module" src="./javascript/script.js"></script>
-</body>
-
+    <script type="module" src="./javascript/script.js"></script>
+  </body>
 </html>
